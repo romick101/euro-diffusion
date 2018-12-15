@@ -1,3 +1,4 @@
+const City = require('./City')
 const { isValidCoordinate, findCityByCoordinates } = require('./utils')
 const minCoordinate = 0
 const maxCoordinate = 9
@@ -75,25 +76,50 @@ class Map {
             evening()
             day++;
         }
-        return this.result
+        return this.getDiffusionResult()
     }
 
     morning () {
         this.cities.map(city => city.countOutcome())
     }
 
+    day () {
+        performTransactions()
+    }
+    
+    evening() {
+        this.cities.map(city => {
+            city.incomeToCurrent()
+            city.flushIncome()
+        })
+    }
+
     addCountry (country) {
+        console.log(`adding country ${country.name} with (${[country.xl,country.yl,country.xh,country.yh]})`)
         this.countries.push(country)
-        for(y=country.yl; y <= country.yh; y++) {
-            for(x=country.xl; x <= country.xh; x++)
-            {
+        for (let y=country.yl; y <= country.yh; y++) {
+            for (let x=country.xl; x <= country.xh; x++) {
                 this.cities.push(new City(x, y))
             }
         }
     }
 
-    getDiffusionResult() {
+    performTransactions() {
+        this.cities.map(city => 
+            city.neighbours.map(neighbour => 
+                this.countries.map(country => 
+                    this.performTransaction(city, neighbour, country))))
+    }
 
+    performTransaction(from, to, country) {
+        to.receiveIncome(country, from.pay(country))
+    }
+
+    getDiffusionResult() {
+        console.log(`making diffusion for ${this.countries.map(({name}) => name)}`)
+        let res = this.countries.reduce((acc, country) => Object.assign(acc, {[country.name]: country.judgmentDay}), {})
+        console.log(`diff1: ${JSON.stringify(res)}`)
+        return res
     }
 }
 

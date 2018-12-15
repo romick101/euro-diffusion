@@ -56,17 +56,26 @@ function processSingleCase(stream, countriesNumber) {
       }
     return map.getDiffusionResult()
 }
-function processStream (stream) {
-    stream.on('readable', () => {
-        let chunk;
-        while (null !== (chunk = stream.read(1))) {
-          processSingleCase(stream, Number(chunk))
-        }
-      })
+function processStream (stream) { 
+    return new Promise(resolve => {
+        const tests = []
+        stream.on('readable', () => {
+            let chunk;
+            while (null !== (chunk = stream.read(1))) {
+                let res = processSingleCase(stream, Number(chunk))
+                console.log(`diff2: ${JSON.stringify(res)}`)
+                if (!(Object.keys(res).length === 0 && res.constructor === Object))
+                    tests.push(res)
+            }
+            console.log(`got tests: ${tests}`)
+            resolve(tests)
+          })
+    })
 }
-function getOutput (inputPath) {
+
+async function getOutput (inputPath) {
     const readStream = fs.createReadStream(inputPath)
-    return processStream(readStream)
+    return await processStream(readStream)
 }
 
 module.exports = getOutput
