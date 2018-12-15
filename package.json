@@ -1,0 +1,22 @@
+{
+  "name": "euro-diffusion",
+  "version": "1.0.0",
+  "description": "Euro diffusion simplified model",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node ./node_modules/jest/bin/jest.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/romick101/euro-diffusion.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/romick101/euro-diffusion/issues"
+  },
+  "homepage": "https://github.com/romick101/euro-diffusion#readme",
+  "devDependencies": {
+    "jest": "^23.6.0"
+  }
+}
