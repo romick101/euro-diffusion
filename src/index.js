@@ -1,5 +1,8 @@
 const map = require('./Map')
 const fs = require('fs')
+const Country = require('./Country')
+const City = require('./City')
+const Map = require('./Map')
 
 function compareChunkToString(chunk, string) {
     return Buffer.compare(chunk, Buffer.from(string)) === 0 ? true : false
@@ -34,12 +37,24 @@ function getCountryName (stream) {
     return name
 }
 
+function areParamsValid (params) {
+    // todo checking
+    return true
+}
+
 function processSingleCase(stream, countriesNumber) {
+    const map = new Map()
     for(i=0; i<countriesNumber; i++) {
         const name = getCountryName(stream)
         const params = getCountryParams(stream)
         console.log(`got country ${name}:(${params})`)
+        if(!areParamsValid(params)) 
+            throw new Error(`Wrong params for  #${name}`)
+        map.addCountry(new Country(name,
+            new City (params[0], params[1]), 
+            new City (params[2], params[3])))      
       }
+    return map.getDiffusionResult()
 }
 function processStream (stream) {
     stream.on('readable', () => {

@@ -5,7 +5,10 @@ class Country {
         this.yl = southWestCity.y
         this.xh = northEastCity.x
         this.yh = northEastCity.y
+        southWestCity.country = this
+        northEastCity.country = this
         this.cities = [southWestCity, northEastCity]
+        this.judgmentDay = -1
     }
 }
 

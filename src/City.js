@@ -1,12 +1,14 @@
+const findCityByCoordinates = require('./utils').findCityByCoordinates
+
 class City {
-    constructor (x, y, country) {
+    constructor (x, y) {
         this.x = x
         this.y = y
-        this.country = country
         this.initialAmount = 1000000
         this.currentBalance = {}
         this.incomingBalance = {}
         this.outcomingBalance = {}
+        this.neighbours = []
     }
     receiveIncome (countryName, amount) {
         this.incomingBalance[countryName]+=amount
@@ -39,6 +41,10 @@ class City {
     pay (countryName) {
         this.currentBalance[countryName]-=this.outcomingBalance[countryName]
         return this.outcomingBalance[countryName]
+    }
+    addNeighbour(city) {
+        if(findCityByCoordinates(this.neighbours, city.x, city.y) !== undefined)
+            this.neighbours.push(city)
     }
 }
 
