@@ -8,3 +8,5 @@ class Country {
         this.cities = [southWestCity, northEastCity]
     }
 }
+
+module.exports = Country
