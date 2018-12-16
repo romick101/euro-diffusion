@@ -79,6 +79,11 @@ class Map {
     }
 
     performDiffusion () {
+        if (this.countries.length === 1) {
+            return {
+                [this.countries[0].name]: 0
+            }
+        }
         this.init()
         let day = 0;
         do {

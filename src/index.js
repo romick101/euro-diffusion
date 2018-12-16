@@ -53,8 +53,7 @@ function processSingleCase(stream, countriesNumber) {
             new City (params[0], params[1]), 
             new City (params[2], params[3])))      
       }
-    map.performDiffusion()
-    return map.getDiffusionResult()
+    return map.performDiffusion()
 }
 function processStream (stream) { 
     return new Promise(resolve => {
