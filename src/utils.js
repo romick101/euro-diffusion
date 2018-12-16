@@ -3,8 +3,7 @@ function isValidCoordinate (coordinate) {
 }
 
 function findCityByCoordinates (cities, x, y) {
-    return this.cities.find(({x: toFindX, y: toFindY}) => 
-        toFindX === x && toFindY === y )
+    return cities.find(({x: toFindX, y: toFindY}) => toFindX === x && toFindY === y )
 }
 
 module.exports = {

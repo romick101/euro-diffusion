@@ -18,7 +18,7 @@ function getCountryParams (stream) {
         if (compareChunkToString(chunk, '\n'))
             break
         if(Number.isInteger(+chunk))
-            params.push(chunk)
+            params.push(+chunk)
       }
     return params
 }
@@ -47,13 +47,13 @@ function processSingleCase(stream, countriesNumber) {
     for(i=0; i<countriesNumber; i++) {
         const name = getCountryName(stream)
         const params = getCountryParams(stream)
-        console.log(`got country ${name}:(${params})`)
         if(!areParamsValid(params)) 
             throw new Error(`Wrong params for  #${name}`)
         map.addCountry(new Country(name,
             new City (params[0], params[1]), 
             new City (params[2], params[3])))      
       }
+    map.performDiffusion()
     return map.getDiffusionResult()
 }
 function processStream (stream) { 
@@ -63,11 +63,9 @@ function processStream (stream) {
             let chunk;
             while (null !== (chunk = stream.read(1))) {
                 let res = processSingleCase(stream, Number(chunk))
-                console.log(`diff2: ${JSON.stringify(res)}`)
                 if (!(Object.keys(res).length === 0 && res.constructor === Object))
                     tests.push(res)
             }
-            console.log(`got tests: ${tests}`)
             resolve(tests)
           })
     })

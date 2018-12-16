@@ -9,37 +9,46 @@ class Map {
         this.countries = []
         this.neighbours = {}
         this.result = {}
+        this.grid = this.makeGrid()
+    }
+    makeGrid () {
+        const grid = new Array(10)
+        for (var i = 0; i < grid.length; i++) {
+            grid[i] = new Array(10);
+        }
+        return grid
     }
 
-    init() {
+    init () {
         this.buildNeighbours()
         this.setInitialBalances()
     }
 
     buildNeighbours () {
-        this.cities.map(({x, y}) => {
-            if(westernCityExists(x, y)) 
-                city.addNeighbour(findCityByCoordinates(x-1, y))
-            if(easternCityExists(x, y)) 
-                city.addNeighbour(findCityByCoordinates(x+1, y))
-            if(northernCityExists(x, y)) 
-                city.addNeighbour(findCityByCoordinates(x, y+1))
-            if(southernCityExists(x, y)) 
-                city.addNeighbour(findCityByCoordinates(x, y-1))
+        this.cities.map((city) => {
+            const {x, y} = city
+            if(this.westernCityExists(x, y)) 
+                city.addNeighbour(findCityByCoordinates(this.cities, x-1, y))
+            if(this.easternCityExists(x, y)) 
+                city.addNeighbour(findCityByCoordinates(this.cities, x+1, y))
+            if(this.northernCityExists(x, y)) 
+                city.addNeighbour(findCityByCoordinates(this.cities, x, y+1))
+            if(this.southernCityExists(x, y)) 
+                city.addNeighbour(findCityByCoordinates(this.cities, x, y-1))
         })
     }
 
     westernCityExists (x, y) {
-        return x != minCoordinate && grid[x-1][y] != 0
+        return x != minCoordinate && this.grid[x-1][y] != 0
     }
     easternCityExists (x, y) {
-        return x != minCoordinate && grid[x+1][y] != 0
+        return x != minCoordinate && this.grid[x+1][y] != 0
     }
     northernCityExists (x, y) {
-        return x != minCoordinate && grid[x][y+1] != 0
+        return x != minCoordinate && this.grid[x][y+1] != 0
     }
     southernCityExists (x, y) {
-        return x != minCoordinate && grid[x][y-1] != 0
+        return x != minCoordinate && this.grid[x][y-1] != 0
     }
 
     setInitialBalances () {
@@ -54,28 +63,30 @@ class Map {
         this.cities.map(city => city.setBalances(this.countries))
     }
 
-    toContinue (day) {
+    isJudgmentDay (day) {
         this.countries.map(country => {
             if (country.judgmentDay < 0)
              country.judgmentDay = day
         })
         return this.cities.reduce((acc, city) => {
-            if(!city.checkReadyStatus()) {
+            if(!city.checkReadyStatus(this.countries)) {
                 city.country.judgmentDay = -1
                 return acc && false
+            } else {
+                return acc
             }
         }, true)
     }
 
     performDiffusion () {
         this.init()
-        let day = 1;
-        while(!toContinue(day)) {
-            morning()
-            day()
-            evening()
+        let day = 0;
+        do {
+            this.morning()
+            this.day()
+            this.evening()
             day++;
-        }
+        } while(!this.isJudgmentDay(day))
         return this.getDiffusionResult()
     }
 
@@ -84,7 +95,7 @@ class Map {
     }
 
     day () {
-        performTransactions()
+        this.performTransactions()
     }
     
     evening() {
@@ -95,13 +106,17 @@ class Map {
     }
 
     addCountry (country) {
-        console.log(`adding country ${country.name} with (${[country.xl,country.yl,country.xh,country.yh]})`)
+        const countryId = this.countries.length + 1
         this.countries.push(country)
         for (let y=country.yl; y <= country.yh; y++) {
             for (let x=country.xl; x <= country.xh; x++) {
-                this.cities.push(new City(x, y))
+                const newCity = new City(x, y)
+                newCity.country = country
+                this.cities.push(newCity)
+                this.grid[x][y]=countryId
             }
         }
+        
     }
 
     performTransactions() {
@@ -112,13 +127,11 @@ class Map {
     }
 
     performTransaction(from, to, country) {
-        to.receiveIncome(country, from.pay(country))
+        to.receiveIncome(country.name, from.pay(country.name))
     }
 
     getDiffusionResult() {
-        console.log(`making diffusion for ${this.countries.map(({name}) => name)}`)
         let res = this.countries.reduce((acc, country) => Object.assign(acc, {[country.name]: country.judgmentDay}), {})
-        console.log(`diff1: ${JSON.stringify(res)}`)
         return res
     }
 }

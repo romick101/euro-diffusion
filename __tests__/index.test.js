@@ -1,7 +1,7 @@
 describe('diffusion unit tests', () => {
     it('returns correct result for dataset1', () => {
         const getOutput = require('../src/index')
-        return(getOutput('./data/dataset1')).then(res => {
+        return getOutput('./data/dataset1').then(res => {
             expect(res).toEqual([
                 {
                     Spain: 382,
