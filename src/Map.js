@@ -13,7 +13,7 @@ class Map {
     }
     makeGrid () {
         const grid = new Array(10)
-        for (var i = 0; i < grid.length; i++) {
+        for (let i = 0; i < grid.length; i++) {
             grid[i] = new Array(10);
         }
         return grid
