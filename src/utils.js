@@ -1,3 +1,6 @@
+const minCoordinate = 0
+const maxCoordinate = 9
+
 function isValidCoordinate (coordinate) {
     return coordinate >= minCoordinate && coordinate <= maxCoordinate
 }
