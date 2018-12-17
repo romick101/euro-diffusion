@@ -16,4 +16,18 @@ describe('diffusion unit tests', () => {
             ])
         })
     })
+    it('returns list of errors for dataset2', () => {
+        const getOutput = require('../src/index')
+        return getOutput('./data/dataset2').then(res => {
+            expect(res).toEqual([
+               new Error('Wrong params for France: 5,7,4,6')
+            ])
+        })
+    })
+    it('returns empty list for dataset3', () => {
+        const getOutput = require('../src/index')
+        return getOutput('./data/dataset3').then(res => {
+            expect(res).toEqual([])
+        })
+    })
 })
