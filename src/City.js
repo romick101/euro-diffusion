@@ -1,10 +1,10 @@
 const findCityByCoordinates = require('./utils').findCityByCoordinates
+const initialAmount = 1000000
 
 class City {
     constructor (x, y) {
         this.x = x
         this.y = y
-        this.initialAmount = 1000000
         this.currentBalance = {}
         this.incomingBalance = {}
         this.outcomingBalance = {}
@@ -30,7 +30,7 @@ class City {
     setBalances (countries) {
         countries.map(({ name }) => {
             if (this.country.name === name) {
-                this.currentBalance[name] = this.initialAmount
+                this.currentBalance[name] = initialAmount
             }
             else 
                 this.currentBalance[name] = 0
