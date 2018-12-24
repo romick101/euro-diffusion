@@ -1,5 +1,6 @@
 const findCityByCoordinates = require('./utils').findCityByCoordinates
 const initialAmount = 1000000
+const billMultiplier = 1/1000
 
 class City {
     constructor (x, y) {
@@ -41,7 +42,7 @@ class City {
 
     countOutcome () {
         Object.keys(this.currentBalance).map(key => {
-                this.outcomingBalance[key] = Number.parseInt(this.currentBalance[key]/1000)
+                this.outcomingBalance[key] = Number.parseInt(this.currentBalance[key]*billMultiplier)
             }   
         ) 
     }
