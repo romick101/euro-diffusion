@@ -1,7 +1,7 @@
 const minCoordinate = 0
 const maxCoordinate = 9
 
-function isValidCoordinate (coordinate) {
+function areInBounds (coordinate) {
     return coordinate >= minCoordinate && coordinate <= maxCoordinate
 }
 
@@ -10,6 +10,6 @@ function findCityByCoordinates (cities, x, y) {
 }
 
 module.exports = {
-    isValidCoordinate,
+    areInBounds,
     findCityByCoordinates
 }
