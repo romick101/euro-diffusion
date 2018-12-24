@@ -1,7 +1,5 @@
 const City = require('./City')
-const { isValidCoordinate, findCityByCoordinates } = require('./utils')
-const minCoordinate = 0
-const maxCoordinate = 9
+const { areInBounds, findCityByCoordinates } = require('./utils')
 
 class Map {
     constructor() {
@@ -39,16 +37,16 @@ class Map {
     }
 
     westernCityExists (x, y) {
-        return x != minCoordinate && this.grid[x-1][y] != 0
+        return areInBounds(x, y) && this.grid[x-1][y] != 0
     }
     easternCityExists (x, y) {
-        return x != minCoordinate && this.grid[x+1][y] != 0
+        return areInBounds(x, y) && this.grid[x+1][y] != 0
     }
     northernCityExists (x, y) {
-        return x != minCoordinate && this.grid[x][y+1] != 0
+        return areInBounds(x, y) && this.grid[x][y+1] != 0
     }
     southernCityExists (x, y) {
-        return x != minCoordinate && this.grid[x][y-1] != 0
+        return areInBounds(x, y) && this.grid[x][y-1] != 0
     }
 
     setInitialBalances () {

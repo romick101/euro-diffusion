@@ -3,7 +3,7 @@ const fs = require('fs')
 const Country = require('./Country')
 const City = require('./City')
 const Map = require('./Map')
-const areInBounds = require('./utils').areInBounds
+const isInBounds = require('./utils').isInBounds
 
 function compareChunkToString(chunk, string) {
     return Buffer.compare(chunk, Buffer.from(string)) === 0 ? true : false
@@ -40,7 +40,7 @@ function getCountryName (stream) {
 
 function areParamsValid (params) {
     if (!(Array.isArray(params) && params.length === 4)) return false
-    if (!params.reduce((acc, param) => acc && areInBounds(param), true)) return false
+    if (!params.reduce((acc, param) => acc && isInBounds(param), true)) return false
     if (!(params[0] <= params[2])) return false
     if (!(params[1] <= params[3])) return false
     return true
